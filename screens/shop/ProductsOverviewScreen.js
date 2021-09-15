@@ -11,7 +11,16 @@ const ProductsOverviewScreen = props => {
     <FlatList
       data={products}
       keyExtractor={item => item.id}
-      renderItem={itemData => <ProductItem product={itemData.item} />}
+      renderItem={itemData => (
+        <ProductItem
+          product={itemData.item}
+          onViewDetail={() => {
+            props.navigation.navigate('ProductDetail', {
+              productId: itemData.item.id,
+            });
+          }}
+        />
+      )}
     />
   );
 };

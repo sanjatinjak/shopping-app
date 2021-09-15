@@ -1,21 +1,38 @@
 import React from 'react';
 import {View, Text, Button, Image, StyleSheet} from 'react-native';
-import Colors from '../constants/Colors';
 
-const ProductItem = ({product}) => {
+import Colors from '../constants/Colors';
+import Fonts from '../constants/Fonts';
+import DefaultStyle from '../constants/DefaultStyle';
+import TouchableCmp from './TouchableCmp';
+
+const ProductItem = ({product, onViewDetail}) => {
   return (
     <View style={styles.product}>
-      <View style={styles.imageContainer}>
-        <Image source={{uri: product.imageUrl}} style={styles.image} />
-      </View>
-      <View style={styles.details}>
-        <Text style={styles.title}>{product.title}</Text>
-        <Text style={styles.price}>${product.price.toFixed(2)}</Text>
-      </View>
-      <View style={styles.actions}>
-        <Button color={Colors.primary} title="View details" />
-        <Button color={Colors.primary} title="Add to cart" />
-      </View>
+      <TouchableCmp onPress={onViewDetail} useForeground>
+        <View style={styles.container}>
+          <View style={styles.imageContainer}>
+            <Image source={{uri: product.imageUrl}} style={styles.image} />
+          </View>
+          <View style={styles.details}>
+            <Text style={styles.title}>{product.title}</Text>
+            <Text style={styles.price}>${product.price.toFixed(2)}</Text>
+          </View>
+          <View style={styles.actions}>
+            <TouchableCmp onPress={onViewDetail}>
+              <View style={DefaultStyle.button}>
+                <Text style={DefaultStyle.buttonText}>View details</Text>
+              </View>
+            </TouchableCmp>
+
+            <TouchableCmp onPress={() => {}}>
+              <View style={DefaultStyle.button}>
+                <Text style={DefaultStyle.buttonText}>Add to cart</Text>
+              </View>
+            </TouchableCmp>
+          </View>
+        </View>
+      </TouchableCmp>
     </View>
   );
 };
@@ -30,7 +47,11 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     height: 300,
     margin: 20,
-    borderRadius: 10
+    borderRadius: 10,
+  },
+  container: {
+    borderRadius: 10,
+    overflow: 'hidden',
   },
   image: {
     width: '100%',
@@ -39,10 +60,12 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 18,
     marginVertical: 3,
+    fontFamily: Fonts.lemonRegular,
   },
   price: {
     fontSize: 14,
     color: '#888',
+    fontFamily: Fonts.lemonLight,
   },
   actions: {
     flexDirection: 'row',
