@@ -12,6 +12,14 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		11DEB912277649319B198809 /* LemonMilkBold-gx2B3.otf in Resources */ = {isa = PBXBuildFile; fileRef = A8E5B69EE1A44EB5980DDA31 /* LemonMilkBold-gx2B3.otf */; };
+		66D4FC70D3C443BB8BD6ECA5 /* LemonMilkBoldItalic-PKZ3P.otf in Resources */ = {isa = PBXBuildFile; fileRef = 0C4BF40BEB7A494AB67DD530 /* LemonMilkBoldItalic-PKZ3P.otf */; };
+		D7CC955ADAD54F8A8764A49D /* LemonMilkLight-owxMq.otf in Resources */ = {isa = PBXBuildFile; fileRef = E0134F2A880945CC938C49BD /* LemonMilkLight-owxMq.otf */; };
+		D3D8DBF97C4C4E9C8FDDFDA6 /* LemonMilkLightItalic-7BjPE.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3EDC9554740E4C6EB83C1B0B /* LemonMilkLightItalic-7BjPE.otf */; };
+		A04964A5D81C4C97A4CAD2B4 /* LemonMilkMedium-mLZYV.otf in Resources */ = {isa = PBXBuildFile; fileRef = E9C7FC5A33A84FE2B7E671CD /* LemonMilkMedium-mLZYV.otf */; };
+		876D253A197B4CDF894A6648 /* LemonMilkMediumItalic-d95nl.otf in Resources */ = {isa = PBXBuildFile; fileRef = 78D37174D57D4B5FA12C5E56 /* LemonMilkMediumItalic-d95nl.otf */; };
+		22CEBD2D20FD4A9FA19A259D /* LemonMilkRegular-X3XE2.otf in Resources */ = {isa = PBXBuildFile; fileRef = BFA66CCBD5064E389EFA9FD5 /* LemonMilkRegular-X3XE2.otf */; };
+		B98C8204B693433CA4D72F46 /* LemonMilkRegularItalic-L3AEy.otf in Resources */ = {isa = PBXBuildFile; fileRef = 551FD2A8F53645B6BF79351C /* LemonMilkRegularItalic-L3AEy.otf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,6 +44,14 @@
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = shopping/main.m; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = shopping/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		A8E5B69EE1A44EB5980DDA31 /* LemonMilkBold-gx2B3.otf */ = {isa = PBXFileReference; name = "LemonMilkBold-gx2B3.otf"; path = "../assets/fonts/LemonMilkBold-gx2B3.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		0C4BF40BEB7A494AB67DD530 /* LemonMilkBoldItalic-PKZ3P.otf */ = {isa = PBXFileReference; name = "LemonMilkBoldItalic-PKZ3P.otf"; path = "../assets/fonts/LemonMilkBoldItalic-PKZ3P.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		E0134F2A880945CC938C49BD /* LemonMilkLight-owxMq.otf */ = {isa = PBXFileReference; name = "LemonMilkLight-owxMq.otf"; path = "../assets/fonts/LemonMilkLight-owxMq.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		3EDC9554740E4C6EB83C1B0B /* LemonMilkLightItalic-7BjPE.otf */ = {isa = PBXFileReference; name = "LemonMilkLightItalic-7BjPE.otf"; path = "../assets/fonts/LemonMilkLightItalic-7BjPE.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		E9C7FC5A33A84FE2B7E671CD /* LemonMilkMedium-mLZYV.otf */ = {isa = PBXFileReference; name = "LemonMilkMedium-mLZYV.otf"; path = "../assets/fonts/LemonMilkMedium-mLZYV.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		78D37174D57D4B5FA12C5E56 /* LemonMilkMediumItalic-d95nl.otf */ = {isa = PBXFileReference; name = "LemonMilkMediumItalic-d95nl.otf"; path = "../assets/fonts/LemonMilkMediumItalic-d95nl.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		BFA66CCBD5064E389EFA9FD5 /* LemonMilkRegular-X3XE2.otf */ = {isa = PBXFileReference; name = "LemonMilkRegular-X3XE2.otf"; path = "../assets/fonts/LemonMilkRegular-X3XE2.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		551FD2A8F53645B6BF79351C /* LemonMilkRegularItalic-L3AEy.otf */ = {isa = PBXFileReference; name = "LemonMilkRegularItalic-L3AEy.otf"; path = "../assets/fonts/LemonMilkRegularItalic-L3AEy.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -109,6 +125,7 @@
 				00E356EF1AD99517003FC87E /* shoppingTests */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
+				CD25DF7AF53747A3BFBE712F /* Resources */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -123,6 +140,22 @@
 			);
 			name = Products;
 			sourceTree = "<group>";
+		};
+		CD25DF7AF53747A3BFBE712F /* Resources */ = {
+			isa = "PBXGroup";
+			children = (
+				A8E5B69EE1A44EB5980DDA31 /* LemonMilkBold-gx2B3.otf */,
+				0C4BF40BEB7A494AB67DD530 /* LemonMilkBoldItalic-PKZ3P.otf */,
+				E0134F2A880945CC938C49BD /* LemonMilkLight-owxMq.otf */,
+				3EDC9554740E4C6EB83C1B0B /* LemonMilkLightItalic-7BjPE.otf */,
+				E9C7FC5A33A84FE2B7E671CD /* LemonMilkMedium-mLZYV.otf */,
+				78D37174D57D4B5FA12C5E56 /* LemonMilkMediumItalic-d95nl.otf */,
+				BFA66CCBD5064E389EFA9FD5 /* LemonMilkRegular-X3XE2.otf */,
+				551FD2A8F53645B6BF79351C /* LemonMilkRegularItalic-L3AEy.otf */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+			path = "";
 		};
 /* End PBXGroup section */
 
@@ -214,6 +247,14 @@
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				11DEB912277649319B198809 /* LemonMilkBold-gx2B3.otf in Resources */,
+				66D4FC70D3C443BB8BD6ECA5 /* LemonMilkBoldItalic-PKZ3P.otf in Resources */,
+				D7CC955ADAD54F8A8764A49D /* LemonMilkLight-owxMq.otf in Resources */,
+				D3D8DBF97C4C4E9C8FDDFDA6 /* LemonMilkLightItalic-7BjPE.otf in Resources */,
+				A04964A5D81C4C97A4CAD2B4 /* LemonMilkMedium-mLZYV.otf in Resources */,
+				876D253A197B4CDF894A6648 /* LemonMilkMediumItalic-d95nl.otf in Resources */,
+				22CEBD2D20FD4A9FA19A259D /* LemonMilkRegular-X3XE2.otf in Resources */,
+				B98C8204B693433CA4D72F46 /* LemonMilkRegularItalic-L3AEy.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
