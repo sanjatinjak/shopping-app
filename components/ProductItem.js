@@ -7,7 +7,7 @@ import DefaultStyle from '../constants/DefaultStyle';
 import TouchableCmp from './TouchableCmp';
 
 const ProductItem = props => {
-  const {product, onSelect, onAddToCart} = props;
+  const {product, onSelect} = props;
   return (
     <View style={styles.product}>
       <TouchableCmp onPress={onSelect} useForeground>
