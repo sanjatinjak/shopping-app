@@ -3,6 +3,7 @@ import {View, Text, FlatList, Button, StyleSheet} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 
 import * as CartActions from '../../store/actions/cart';
+import * as OrderActions from '../../store/actions/orders';
 import CartItem from '../../components/CartItem';
 import TouchableCmp from '../../components/TouchableCmp';
 import DefaultStyle from '../../constants/DefaultStyle';
@@ -23,7 +24,7 @@ const CartScreen = props => {
         sum: state.cart.items[key].sum,
       });
     }
-    return transformedCartItems.sort((a,b) => a.productId-b.productId);
+    return transformedCartItems.sort((a, b) => a.productId - b.productId);
   });
 
   return (
@@ -35,7 +36,9 @@ const CartScreen = props => {
         </Text>
         <TouchableCmp
           disabled={cartItems.length === 0 ? true : false}
-          onPress={() => console.log('p')}>
+          onPress={() =>
+            dispatch(OrderActions.addOrder(cartItems, cartTotalAmount))
+          }>
           <View
             style={[
               DefaultStyle.button,
@@ -50,6 +53,7 @@ const CartScreen = props => {
         keyExtractor={item => item.productId}
         renderItem={itemData => (
           <CartItem
+            deleteItem
             product={itemData.item}
             onRemove={() =>
               dispatch(CartActions.removeFromCart(itemData.item.productId))

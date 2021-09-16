@@ -14,6 +14,15 @@ const ProductsOverviewScreen = (props) => {
 
   useEffect(() => {
     props.navigation.setOptions({
+      headerLeft: () => (
+        <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
+          <Item
+            title="Menu"
+            iconName="menu"
+            onPress={() => props.navigation.toggleDrawer()}
+          />
+        </HeaderButtons>
+      ),
       headerRight: () => (
         <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
           <Item
