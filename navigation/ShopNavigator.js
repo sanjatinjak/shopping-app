@@ -8,6 +8,8 @@ import ProductsOverviewScreen from '../screens/shop/ProductsOverviewScreen';
 import ProductDetailScreen from '../screens/shop/ProductDetailScreen';
 import CartScreen from '../screens/shop/CartScreen';
 import OrdersScreen from '../screens/shop/OrdersScreen';
+import UserProductsScreen from '../screens/user/UserProductsScreen';
+import EditProductScreen from '../screens/user/EditProductScreen';
 
 import Colors from '../constants/Colors';
 import Fonts from '../constants/Fonts';
@@ -55,6 +57,23 @@ function ProductsNavigator() {
   );
 }
 
+function AdminNavigator() {
+  return (
+    <Stack.Navigator screenOptions={defaultStyle}>
+      <Stack.Screen
+        name="UserProductsScreen"
+        component={UserProductsScreen}
+        options={{title: 'My products'}}
+      />
+      <Stack.Screen
+        name="EditProduct"
+        component={EditProductScreen}
+        options={{title: 'Edit product info'}}
+      />
+    </Stack.Navigator>
+  );
+}
+
 function ShopNavigator() {
   return (
     <NavigationContainer>
@@ -64,7 +83,11 @@ function ShopNavigator() {
           component={ProductsNavigator}
           options={{
             drawerIcon: drawerConfig => (
-              <MaterialIcons name="shopping-cart" color={drawerConfig.tintColor} size={20} />
+              <MaterialIcons
+                name="shopping-cart"
+                color={drawerConfig.tintColor}
+                size={20}
+              />
             ),
           }}
         />
@@ -73,7 +96,24 @@ function ShopNavigator() {
           component={OrdersNavigator}
           options={{
             drawerIcon: drawerConfig => (
-              <MaterialIcons name="list" color={drawerConfig.tintColor} size={20} />
+              <MaterialIcons
+                name="list"
+                color={drawerConfig.tintColor}
+                size={20}
+              />
+            ),
+          }}
+        />
+        <Drawer.Screen
+          name="Admin"
+          component={AdminNavigator}
+          options={{
+            drawerIcon: drawerConfig => (
+              <MaterialIcons
+                name="inventory"
+                color={drawerConfig.tintColor}
+                size={20}
+              />
             ),
           }}
         />
