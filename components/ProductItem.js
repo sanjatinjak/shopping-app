@@ -20,7 +20,7 @@ const ProductItem = ({product, onViewDetail, onAddToCart}) => {
           </View>
           <View style={styles.actions}>
             <TouchableCmp onPress={onViewDetail}>
-              <View style={DefaultStyle.button}>
+              <View style={[DefaultStyle.button, {backgroundColor: '#db5f12'}]}>
                 <Text style={DefaultStyle.buttonText}>View details</Text>
               </View>
             </TouchableCmp>

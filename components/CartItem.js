@@ -5,18 +5,18 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import TouchableCmp from './TouchableCmp';
 import Fonts from '../constants/Fonts';
 
-const CartItem = ({onRemove,product}) => {
+const CartItem = ({onRemove,product, deleteItem}) => {
   return (
     <View style={styles.cartItem}>
-      <Text style={styles.itemData}>
-        <Text style={styles.qty}>{product.quantity}</Text>{' '}
-        <Text style={styles.mainText}>{product.title}</Text>
-      </Text>
+      <View style={styles.itemData}>
+        <Text style={styles.qty}>{product.quantity}</Text>
+        <Text style={styles.mainText}>{' '}{' '}{product.title}</Text>
+      </View>
       <View style={styles.itemData}>
         <Text style={styles.mainText}>${product.sum}</Text>
-        <TouchableCmp onPress={onRemove} style={styles.deleteButton}>
+        {deleteItem && <TouchableCmp onPress={onRemove} style={styles.deleteButton}>
           <MaterialIcons name="delete" size={26} color="red" />
-        </TouchableCmp>
+        </TouchableCmp>}
       </View>
     </View>
   );
