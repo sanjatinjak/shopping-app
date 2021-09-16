@@ -6,7 +6,7 @@ import Fonts from '../constants/Fonts';
 import DefaultStyle from '../constants/DefaultStyle';
 import TouchableCmp from './TouchableCmp';
 
-const ProductItem = ({product, onViewDetail}) => {
+const ProductItem = ({product, onViewDetail, onAddToCart}) => {
   return (
     <View style={styles.product}>
       <TouchableCmp onPress={onViewDetail} useForeground>
@@ -25,7 +25,7 @@ const ProductItem = ({product, onViewDetail}) => {
               </View>
             </TouchableCmp>
 
-            <TouchableCmp onPress={() => {}}>
+            <TouchableCmp onPress={onAddToCart}>
               <View style={DefaultStyle.button}>
                 <Text style={DefaultStyle.buttonText}>Add to cart</Text>
               </View>

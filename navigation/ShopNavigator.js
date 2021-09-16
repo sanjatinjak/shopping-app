@@ -4,8 +4,11 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 import ProductsOverviewScreen from '../screens/shop/ProductsOverviewScreen';
 import ProductDetailScreen from '../screens/shop/ProductDetailScreen';
+import CartScreen from '../screens/shop/CartScreen';
+
 import Colors from '../constants/Colors';
 import Fonts from '../constants/Fonts';
+
 
 const Stack = createNativeStackNavigator();
 
@@ -16,7 +19,7 @@ function ShopNavigator() {
         screenOptions={{
           headerTitleAlign: 'center',
           headerStyle: {backgroundColor: Colors.primary},
-          headerTintColor: 'white'
+          headerTintColor: 'white',
         }}>
         <Stack.Screen
           name="ProductsOverview"
@@ -29,6 +32,11 @@ function ShopNavigator() {
           name="ProductDetail"
           component={ProductDetailScreen}
           options={{title: 'Product details'}}
+        />
+        <Stack.Screen
+          name="Cart"
+          component={CartScreen}
+          options={{title: 'My cart'}}
         />
       </Stack.Navigator>
     </NavigationContainer>
