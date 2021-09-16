@@ -13,7 +13,7 @@ const CartItem = ({onRemove,product, deleteItem}) => {
         <Text style={styles.mainText}>{' '}{' '}{product.title}</Text>
       </View>
       <View style={styles.itemData}>
-        <Text style={styles.mainText}>${product.sum}</Text>
+        <Text style={styles.mainText}>{' '}{' '}${product.sum.toFixed(2)}</Text>
         {deleteItem && <TouchableCmp onPress={onRemove} style={styles.deleteButton}>
           <MaterialIcons name="delete" size={26} color="red" />
         </TouchableCmp>}
@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginHorizontal: 20,
+    marginHorizontal: 10,
   },
   itemData: {
     flexDirection: 'row',

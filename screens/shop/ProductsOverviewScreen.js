@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {FlatList, View} from 'react-native';
+import {FlatList, View, Text} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {HeaderButtons, Item} from 'react-navigation-header-buttons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -7,8 +7,10 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import * as CartActions from '../../store/actions/cart';
 import ProductItem from '../../components/ProductItem';
 import CustomHeaderButton from '../../components/HeaderButton';
+import TouchableCmp from '../../components/TouchableCmp';
+import DefaultStyle from '../../constants/DefaultStyle';
 
-const ProductsOverviewScreen = (props) => {
+const ProductsOverviewScreen = props => {
   const products = useSelector(state => state.products.allProducts);
   const dispatch = useDispatch();
 
@@ -35,6 +37,12 @@ const ProductsOverviewScreen = (props) => {
     });
   }, []);
 
+  const selectHandler = id => {
+    props.navigation.navigate('ProductDetail', {
+      productId: id,
+    });
+  };
+
   return (
     <FlatList
       data={products}
@@ -42,15 +50,20 @@ const ProductsOverviewScreen = (props) => {
       renderItem={itemData => (
         <ProductItem
           product={itemData.item}
-          onViewDetail={() => {
-            props.navigation.navigate('ProductDetail', {
-              productId: itemData.item.id,
-            });
-          }}
-          onAddToCart={() => {
-            dispatch(CartActions.addToCart(itemData.item));
-          }}
-        />
+          onSelect={() => selectHandler(itemData.item.id)}>
+          <TouchableCmp onPress={() => selectHandler(itemData.item.id)}>
+            <View style={[DefaultStyle.button, {backgroundColor: '#db5f12'}]}>
+              <Text style={DefaultStyle.buttonText}>View details</Text>
+            </View>
+          </TouchableCmp>
+
+          <TouchableCmp
+            onPress={() => dispatch(CartActions.addToCart(itemData.item))}>
+            <View style={DefaultStyle.button}>
+              <Text style={DefaultStyle.buttonText}>Add to cart</Text>
+            </View>
+          </TouchableCmp>
+        </ProductItem>
       )}
     />
   );

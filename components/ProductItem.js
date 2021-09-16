@@ -6,10 +6,11 @@ import Fonts from '../constants/Fonts';
 import DefaultStyle from '../constants/DefaultStyle';
 import TouchableCmp from './TouchableCmp';
 
-const ProductItem = ({product, onViewDetail, onAddToCart}) => {
+const ProductItem = props => {
+  const {product, onSelect, onAddToCart} = props;
   return (
     <View style={styles.product}>
-      <TouchableCmp onPress={onViewDetail} useForeground>
+      <TouchableCmp onPress={onSelect} useForeground>
         <View style={styles.container}>
           <View style={styles.imageContainer}>
             <Image source={{uri: product.imageUrl}} style={styles.image} />
@@ -18,19 +19,7 @@ const ProductItem = ({product, onViewDetail, onAddToCart}) => {
             <Text style={styles.title}>{product.title}</Text>
             <Text style={styles.price}>${product.price.toFixed(2)}</Text>
           </View>
-          <View style={styles.actions}>
-            <TouchableCmp onPress={onViewDetail}>
-              <View style={[DefaultStyle.button, {backgroundColor: '#db5f12'}]}>
-                <Text style={DefaultStyle.buttonText}>View details</Text>
-              </View>
-            </TouchableCmp>
-
-            <TouchableCmp onPress={onAddToCart}>
-              <View style={DefaultStyle.button}>
-                <Text style={DefaultStyle.buttonText}>Add to cart</Text>
-              </View>
-            </TouchableCmp>
-          </View>
+          <View style={styles.actions}>{props.children}</View>
         </View>
       </TouchableCmp>
     </View>
