@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useCallback} from 'react';
+import React, {useEffect, useState, useCallback, useReducer} from 'react';
 import {
   ScrollView,
   View,
@@ -17,6 +17,30 @@ import CustomHeaderButton from '../../components/HeaderButton';
 import Fonts from '../../constants/Fonts';
 import DefaultStyle from '../../constants/DefaultStyle';
 
+const UPDATE = 'UPDATE';
+
+const formReducer = (state, action) => {
+  if (action.type === UPDATE) {
+    const updatedValues = {
+      ...state.inputValues,
+      [action.inputId]: action.payload,
+    };
+
+    const updateValid = {...state.inputValid, [action.inputId]: action.isValid};
+    let formIsValid = true;
+    for (const key in updateValid) {
+      formIsValid = formIsValid && updateValid[key];
+    }
+    return {
+      formValid: formIsValid,
+      inputValues: updatedValues,
+      inputValid: updateValid,
+    };
+  }
+
+  return state;
+};
+
 const EditProductScreen = ({route, navigation}) => {
   const dispatch = useDispatch();
   let id;
@@ -28,36 +52,42 @@ const EditProductScreen = ({route, navigation}) => {
     state.products.userProducts.find(product => product.id === id),
   );
 
-  const [productTitle, setTitle] = useState(product ? product.title : '');
-  const [productPrice, setPrice] = useState(
-    product ? product.price.toString() : '',
-  );
-  const [productImageUrl, setImageUrl] = useState(
-    product ? product.imageUrl : '',
-  );
-  const [productDescription, setDescription] = useState(
-    product ? product.description : '',
-  );
+  const [formState, dispatchForm] = useReducer(formReducer, {
+    inputValues: {
+      title: product ? product.title : '',
+      imageUrl: product ? product.imageUrl : '',
+      price: '',
+      description: product ? product.description : '',
+    },
+    inputValid: {
+      title: product ? true : false,
+      imageUrl: product ? true : false,
+      price: product ? true : false,
+      description: product ? true : false,
+    },
+    formValid: false,
+  });
 
   const submitHandler = () => {
     if (product) {
       dispatch(
         ProductActions.updateProduct(
           id,
-          productTitle,
-          productDescription,
-          productImageUrl,
+          formState.inputValues.title,
+          formState.inputValues.description,
+          formState.inputValues.imageUrl,
         ),
       );
     } else {
       dispatch(
         ProductActions.createProduct(
-          productTitle,
-          productDescription,
-          productImageUrl,
-          +productPrice,
+          formState.inputValues.title,
+          formState.inputValues.description,
+          formState.inputValues.imageUrl,
+          +formState.inputValues.price,
         ),
       );
+      navigation.goBack();
     }
   };
 
@@ -67,6 +97,19 @@ const EditProductScreen = ({route, navigation}) => {
     });
   }, [id]);
 
+  const changeHandler = (inputIdentifier, text) => {
+    let isValid = false;
+    if (text.trim().length > 0) {
+      isValid = true;
+    }
+    dispatchForm({
+      type: UPDATE,
+      payload: text,
+      isValid: isValid,
+      inputId: inputIdentifier,
+    });
+  };
+  console.log(formState.inputValid);
   return (
     <ScrollView>
       <View style={styles.form}>
@@ -74,27 +117,33 @@ const EditProductScreen = ({route, navigation}) => {
           <Text style={styles.label}>Title</Text>
           <TextInput
             style={styles.input}
-            value={productTitle}
-            onChangeText={text => {
-              setTitle(text);
-            }}
+            value={formState.inputValues.title}
+            onChangeText={text => changeHandler('title', text)}
+            returnKeyType="next"
           />
+          {!formState.inputValid.title && (
+            <Text style={styles.error}>Enter valid title</Text>
+          )}
         </View>
         <View style={styles.formControl}>
           <Text style={styles.label}>Image URL</Text>
           <TextInput
             style={styles.input}
-            value={productImageUrl}
-            onChangeText={text => setImageUrl(text)}
+            value={formState.inputValues.imageUrl}
+            onChangeText={text => changeHandler('imageUrl', text)}
           />
+          {!formState.inputValid.imageUrl && (
+            <Text style={styles.error}>Enter valid image URL</Text>
+          )}
         </View>
         {product ? null : (
           <View style={styles.formControl}>
             <Text style={styles.label}>Price</Text>
             <TextInput
               style={styles.input}
-              value={productPrice}
-              onChangeText={text => setPrice(text)}
+              value={formState.inputValues.price}
+              onChangeText={text => changeHandler('price', text)}
+              keyboardType="decimal-pad"
             />
           </View>
         )}
@@ -102,13 +151,20 @@ const EditProductScreen = ({route, navigation}) => {
           <Text style={styles.label}>Description</Text>
           <TextInput
             style={styles.input}
-            value={productDescription}
-            onChangeText={text => setDescription(text)}
+            value={formState.inputValues.description}
+            onChangeText={text => changeHandler('description', text)}
           />
+          {!formState.inputValid.description && (
+            <Text style={styles.error}>Enter valid description</Text>
+          )}
         </View>
         <View style={styles.buttonContainer}>
-          <TouchableCmp onPress={submitHandler}>
-            <View style={[DefaultStyle.button, {backgroundColor: '#444a5c'}]}>
+          <TouchableCmp onPress={submitHandler} disabled={!formState.formValid}>
+            <View
+              style={[
+                DefaultStyle.button,
+                {backgroundColor: formState.formValid ? '#444a5c' : '#888'},
+              ]}>
               <Text style={DefaultStyle.buttonText}>Submit</Text>
             </View>
           </TouchableCmp>
@@ -137,8 +193,14 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     alignItems: 'center',
-    margin: 10
-  }
+    margin: 10,
+  },
+  error: {
+    fontFamily: Fonts.lemonLight,
+    fontSize: 12,
+    color: 'red',
+    textTransform: 'capitalize',
+  },
 });
 
 export default EditProductScreen;
