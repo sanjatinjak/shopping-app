@@ -68,7 +68,7 @@ function AdminNavigator() {
       <Stack.Screen
         name="EditProduct"
         component={EditProductScreen}
-        options={{title: 'Edit product info'}}
+  
       />
     </Stack.Navigator>
   );

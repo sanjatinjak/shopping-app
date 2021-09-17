@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {FlatList, View, Text} from 'react-native';
+import {FlatList, View, Text, Alert} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {HeaderButtons, Item} from 'react-navigation-header-buttons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -37,6 +37,16 @@ const UserProductsScreen = props => {
     });
   }, []);
 
+  const deleteHandler = id => {
+    Alert.alert('Are you sure ?', 'Do you want to delete this item ?', [
+      {text: 'No', style: 'default'},
+      {
+        text: 'Yes',
+        style: 'destructive',
+        onPress: () => dispatch(ProductActions.deleteProduct(id)),
+      },
+    ]);
+  };
   const onSelectHandler = id => {
     props.navigation.navigate('EditProduct', {
       productId: id,
@@ -58,10 +68,7 @@ const UserProductsScreen = props => {
             </View>
           </TouchableCmp>
 
-          <TouchableCmp
-            onPress={() =>
-              dispatch(ProductActions.deleteProduct(itemData.item.id))
-            }>
+          <TouchableCmp onPress={() => deleteHandler(itemData.item.id)}>
             <View style={[DefaultStyle.button, {backgroundColor: 'red'}]}>
               <Text style={DefaultStyle.buttonText}>Delete</Text>
             </View>
