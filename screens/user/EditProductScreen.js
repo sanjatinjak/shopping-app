@@ -6,6 +6,7 @@ import {
   TextInput,
   StyleSheet,
   Alert,
+  KeyboardAvoidingView,
 } from 'react-native';
 import {HeaderButtons, Item} from 'react-navigation-header-buttons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -14,8 +15,8 @@ import {useSelector, useDispatch} from 'react-redux';
 import TouchableCmp from '../../components/TouchableCmp';
 import * as ProductActions from '../../store/actions/products';
 import CustomHeaderButton from '../../components/HeaderButton';
-import Fonts from '../../constants/Fonts';
 import DefaultStyle from '../../constants/DefaultStyle';
+import Input from '../../components/Input';
 
 const UPDATE = 'UPDATE';
 
@@ -56,7 +57,7 @@ const EditProductScreen = ({route, navigation}) => {
     inputValues: {
       title: product ? product.title : '',
       imageUrl: product ? product.imageUrl : '',
-      price: '',
+      price: 0,
       description: product ? product.description : '',
     },
     inputValid: {
@@ -99,9 +100,16 @@ const EditProductScreen = ({route, navigation}) => {
 
   const changeHandler = (inputIdentifier, text) => {
     let isValid = false;
-    if (text.trim().length > 0) {
+    if (inputIdentifier === 'price') {
+      const num = parseInt(text);
+      if (num > 0 && num < 1000000) {
+        isValid = true;
+      }
+    } else {
+      text.trim().length > 0;
       isValid = true;
     }
+
     dispatchForm({
       type: UPDATE,
       payload: text,
@@ -109,68 +117,65 @@ const EditProductScreen = ({route, navigation}) => {
       inputId: inputIdentifier,
     });
   };
-  console.log(formState.inputValid);
+
   return (
-    <ScrollView>
-      <View style={styles.form}>
-        <View style={styles.formControl}>
-          <Text style={styles.label}>Title</Text>
-          <TextInput
-            style={styles.input}
-            value={formState.inputValues.title}
-            onChangeText={text => changeHandler('title', text)}
+    <KeyboardAvoidingView style={{flex: 1}}>
+      <ScrollView>
+        <View style={styles.form}>
+          <Input
+            label="title"
+            keyboardType="default"
+            errorText="Please enter valid title."
             returnKeyType="next"
+            value={formState.inputValues.title}
+            onChangeHandler={changeHandler}
+            isInputValid={formState.inputValid.title}
           />
-          {!formState.inputValid.title && (
-            <Text style={styles.error}>Enter valid title</Text>
-          )}
-        </View>
-        <View style={styles.formControl}>
-          <Text style={styles.label}>Image URL</Text>
-          <TextInput
-            style={styles.input}
+          <Input
+            label="imageUrl"
+            keyboardType="default"
+            errorText="Please enter valid image URL."
             value={formState.inputValues.imageUrl}
-            onChangeText={text => changeHandler('imageUrl', text)}
+            onChangeHandler={changeHandler}
+            isInputValid={formState.inputValid.imageUrl}
           />
-          {!formState.inputValid.imageUrl && (
-            <Text style={styles.error}>Enter valid image URL</Text>
-          )}
-        </View>
-        {product ? null : (
-          <View style={styles.formControl}>
-            <Text style={styles.label}>Price</Text>
-            <TextInput
-              style={styles.input}
+          {product ? null : (
+            <Input
+              label="price"
+              keyboardType="numeric"
+              errorText="Please enter valid price."
               value={formState.inputValues.price}
-              onChangeText={text => changeHandler('price', text)}
-              keyboardType="decimal-pad"
+              onChangeHandler={changeHandler}
+              isInputValid={formState.inputValid.price}
             />
-          </View>
-        )}
-        <View style={styles.formControl}>
-          <Text style={styles.label}>Description</Text>
-          <TextInput
-            style={styles.input}
-            value={formState.inputValues.description}
-            onChangeText={text => changeHandler('description', text)}
-          />
-          {!formState.inputValid.description && (
-            <Text style={styles.error}>Enter valid description</Text>
           )}
+          <Input
+            label="description"
+            keyboardType="default"
+            errorText="Please enter valid description."
+            multiline
+            numberOfLines={3}
+            value={formState.inputValues.description}
+            onChangeHandler={changeHandler}
+            isInputValid={formState.inputValid.description}
+          />
+
+          <View style={styles.buttonContainer}>
+            <TouchableCmp
+              onPress={submitHandler}
+              disabled={!formState.formValid}>
+              <View
+                style={[
+                  DefaultStyle.button,
+                  {backgroundColor: formState.formValid ? '#444a5c' : '#888'},
+                ]}>
+                <Text style={DefaultStyle.buttonText}>Submit</Text>
+              </View>
+            </TouchableCmp>
+          </View>
         </View>
-        <View style={styles.buttonContainer}>
-          <TouchableCmp onPress={submitHandler} disabled={!formState.formValid}>
-            <View
-              style={[
-                DefaultStyle.button,
-                {backgroundColor: formState.formValid ? '#444a5c' : '#888'},
-              ]}>
-              <Text style={DefaultStyle.buttonText}>Submit</Text>
-            </View>
-          </TouchableCmp>
-        </View>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -178,28 +183,9 @@ const styles = StyleSheet.create({
   form: {
     margin: 20,
   },
-  formControl: {
-    width: '100%',
-  },
-  label: {
-    fontFamily: Fonts.lemonRegular,
-    marginVertical: 8,
-  },
-  input: {
-    paddingHorizontal: 2,
-    paddingVertical: 5,
-    borderBottomColor: '#888',
-    borderBottomWidth: 1,
-  },
   buttonContainer: {
     alignItems: 'center',
     margin: 10,
-  },
-  error: {
-    fontFamily: Fonts.lemonLight,
-    fontSize: 12,
-    color: 'red',
-    textTransform: 'capitalize',
   },
 });
 
