@@ -1,18 +1,17 @@
-import React from 'react';
-import {View, Text, FlatList, Button, StyleSheet} from 'react-native';
-import {useSelector, useDispatch} from 'react-redux';
+import React from "react";
+import { View, Text, FlatList, StyleSheet } from "react-native";
+import { useSelector, useDispatch } from "react-redux";
 
-import * as CartActions from '../../store/actions/cart';
-import * as OrderActions from '../../store/actions/orders';
-import CartItem from '../../components/CartItem';
-import TouchableCmp from '../../components/TouchableCmp';
-import DefaultStyle from '../../constants/DefaultStyle';
-import Fonts from '../../constants/Fonts';
+import * as CartActions from "../../store/actions/cart";
+import * as OrderActions from "../../store/actions/orders";
+import CartItem from "../../components/CartItem";
+import Fonts from "../../constants/Fonts";
+import CustomButton from "../../components/CustomButton";
 
-const CartScreen = props => {
-  const cartTotalAmount = useSelector(state => state.cart.totalAmount);
+const CartScreen = (props) => {
   const dispatch = useDispatch();
-  const cartItems = useSelector(state => {
+  const cartTotalAmount = useSelector((state) => state.cart.totalAmount);
+  const cartItems = useSelector((state) => {
     const transformedCartItems = [];
 
     for (const key in state.cart.items) {
@@ -31,29 +30,24 @@ const CartScreen = props => {
     <View style={styles.screen}>
       <View style={styles.summary}>
         <Text style={styles.summaryText}>
-          Total:{' '}
+          Total:{" "}
           <Text style={styles.amount}>
             ${Math.round(cartTotalAmount.toFixed(2) * 100) / 100}
           </Text>
         </Text>
-        <TouchableCmp
-          disabled={cartItems.length === 0 ? true : false}
-          onPress={() =>
+        <CustomButton
+          onPressHandler={() =>
             dispatch(OrderActions.addOrder(cartItems, cartTotalAmount))
-          }>
-          <View
-            style={[
-              DefaultStyle.button,
-              {backgroundColor: cartItems.length === 0 ? 'gray' : 'green'},
-            ]}>
-            <Text style={DefaultStyle.buttonText}>Order now</Text>
-          </View>
-        </TouchableCmp>
+          }
+          label="Order now"
+          color={cartItems.length === 0 ? "gray" : "green"}
+          disabled={cartItems.length === 0 ? true : false}
+        />
       </View>
       <FlatList
         data={cartItems}
-        keyExtractor={item => item.productId}
-        renderItem={itemData => (
+        keyExtractor={(item) => item.productId}
+        renderItem={(itemData) => (
           <CartItem
             deleteItem
             product={itemData.item}
@@ -72,17 +66,17 @@ const styles = StyleSheet.create({
     margin: 20,
   },
   summary: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
     marginBottom: 20,
     padding: 10,
-    shadowColor: 'black',
+    shadowColor: "black",
     shadowOpacity: 0.6,
-    shadowOffset: {width: 0, heigh: 2},
+    shadowOffset: { width: 0, heigh: 2 },
     shadowRadius: 8,
     elevation: 5,
-    backgroundColor: 'white',
+    backgroundColor: "white",
   },
   summaryText: {
     fontFamily: Fonts.lemonRegular,

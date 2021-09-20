@@ -4,9 +4,8 @@ import {
   Platform,
 } from 'react-native';
 
-const TouchableCmp =
+export default TouchableCmp =
   Platform.OS === 'android' && Platform.Version >= 21
     ? TouchableNativeFeedback
     : TouchableOpacity;
 
-export default TouchableCmp;

@@ -1,14 +1,11 @@
 import React from 'react';
 import {View, Text, Button, Image, StyleSheet} from 'react-native';
 
-import Colors from '../constants/Colors';
-import Fonts from '../constants/Fonts';
-import DefaultStyle from '../constants/DefaultStyle';
 import TouchableCmp from './TouchableCmp';
+import Fonts from '../constants/Fonts';
 
 const ProductItem = props => {
   const {product, onSelect} = props;
-  let price = +product.price;
   return (
     <View style={styles.product}>
       <TouchableCmp onPress={onSelect} useForeground>
@@ -18,7 +15,7 @@ const ProductItem = props => {
           </View>
           <View style={styles.details}>
             <Text style={styles.title}>{product.title}</Text>
-            <Text style={styles.price}>${price.toFixed(2)}</Text>
+            <Text style={styles.price}>${+product.price.toFixed(2)}</Text>
           </View>
           <View style={styles.actions}>{props.children}</View>
         </View>

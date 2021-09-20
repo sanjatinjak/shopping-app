@@ -1,14 +1,14 @@
-import PRODUCTS from '../../data/dummy-data';
+import PRODUCTS from "../../data/dummy-data";
 import {
   DELETE_PRODUCT,
   CREATE_PRODUCT,
   UPDATE_PRODUCT,
-} from '../actions/products';
-import Product from '../../models/product';
+} from "../actions/products";
+import Product from "../../models/product";
 
 const initalState = {
   allProducts: PRODUCTS,
-  userProducts: PRODUCTS.filter(product => product.ownerId === 'u1'),
+  userProducts: PRODUCTS.filter((product) => product.ownerId === "u1"),
 };
 
 export default (state = initalState, action) => {
@@ -17,19 +17,19 @@ export default (state = initalState, action) => {
       const id = action.payload;
       return {
         ...state,
-        userProducts: state.userProducts.filter(product => product.id !== id),
-        allProducts: state.allProducts.filter(product => product.id !== id),
+        userProducts: state.userProducts.filter((product) => product.id !== id),
+        allProducts: state.allProducts.filter((product) => product.id !== id),
       };
     case CREATE_PRODUCT:
-    console.log(action.payload.price);
+      console.log(action.payload.price);
       console.log(typeof action.payload.price);
       const newProduct = new Product(
         new Date().toString(),
-        'u1',
+        "u1",
         action.payload.title,
         action.payload.imageUrl,
         action.payload.description,
-        action.payload.price,
+        action.payload.price
       );
       return {
         ...state,
@@ -37,9 +37,8 @@ export default (state = initalState, action) => {
         userProducts: state.userProducts.concat(newProduct),
       };
     case UPDATE_PRODUCT:
-    console.log(action.payload);
       const productIndex = state.userProducts.findIndex(
-        product => product.id === action.pid,
+        (product) => product.id === action.pid
       );
       const updatedProduct = new Product(
         action.pid,
@@ -47,13 +46,13 @@ export default (state = initalState, action) => {
         action.payload.title,
         action.payload.imageUrl,
         action.payload.description,
-        state.userProducts[productIndex].price,
+        state.userProducts[productIndex].price
       );
       const updatedUserProducts = [...state.userProducts];
       updatedUserProducts[productIndex] = updatedProduct;
 
       const productIndexAll = state.allProducts.findIndex(
-        product => product.id === action.pid,
+        (product) => product.id === action.pid
       );
       const updatedAllProducts = [...state.allProducts];
       updatedAllProducts[productIndexAll] = updatedProduct;

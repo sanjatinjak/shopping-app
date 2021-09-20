@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useCallback, useReducer} from 'react';
+import React, { useEffect, useState, useCallback, useReducer } from "react";
 import {
   ScrollView,
   View,
@@ -7,18 +7,17 @@ import {
   StyleSheet,
   Alert,
   KeyboardAvoidingView,
-} from 'react-native';
-import {HeaderButtons, Item} from 'react-navigation-header-buttons';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import {useSelector, useDispatch} from 'react-redux';
+} from "react-native";
+import { HeaderButtons, Item } from "react-navigation-header-buttons";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import { useSelector, useDispatch } from "react-redux";
 
-import TouchableCmp from '../../components/TouchableCmp';
-import * as ProductActions from '../../store/actions/products';
-import CustomHeaderButton from '../../components/HeaderButton';
-import DefaultStyle from '../../constants/DefaultStyle';
-import Input from '../../components/Input';
+import * as ProductActions from "../../store/actions/products";
+import CustomHeaderButton from "../../components/HeaderButton";
+import Input from "../../components/Input";
+import CustomButton from "../../components/CustomButton";
 
-const UPDATE = 'UPDATE';
+const UPDATE = "UPDATE";
 
 const formReducer = (state, action) => {
   if (action.type === UPDATE) {
@@ -27,7 +26,10 @@ const formReducer = (state, action) => {
       [action.inputId]: action.payload,
     };
 
-    const updateValid = {...state.inputValid, [action.inputId]: action.isValid};
+    const updateValid = {
+      ...state.inputValid,
+      [action.inputId]: action.isValid,
+    };
     let formIsValid = true;
     for (const key in updateValid) {
       formIsValid = formIsValid && updateValid[key];
@@ -42,23 +44,23 @@ const formReducer = (state, action) => {
   return state;
 };
 
-const EditProductScreen = ({route, navigation}) => {
+const EditProductScreen = ({ route, navigation }) => {
   const dispatch = useDispatch();
   let id;
   if (route.params) {
     id = route.params.productId;
   }
 
-  const product = useSelector(state =>
-    state.products.userProducts.find(product => product.id === id),
+  const product = useSelector((state) =>
+    state.products.userProducts.find((product) => product.id === id)
   );
 
   const [formState, dispatchForm] = useReducer(formReducer, {
     inputValues: {
-      title: product ? product.title : '',
-      imageUrl: product ? product.imageUrl : '',
+      title: product ? product.title : "",
+      imageUrl: product ? product.imageUrl : "",
       price: 0,
-      description: product ? product.description : '',
+      description: product ? product.description : "",
     },
     inputValid: {
       title: product ? true : false,
@@ -76,8 +78,8 @@ const EditProductScreen = ({route, navigation}) => {
           id,
           formState.inputValues.title,
           formState.inputValues.description,
-          formState.inputValues.imageUrl,
-        ),
+          formState.inputValues.imageUrl
+        )
       );
     } else {
       dispatch(
@@ -85,8 +87,8 @@ const EditProductScreen = ({route, navigation}) => {
           formState.inputValues.title,
           formState.inputValues.description,
           formState.inputValues.imageUrl,
-          +formState.inputValues.price,
-        ),
+          +formState.inputValues.price
+        )
       );
       navigation.goBack();
     }
@@ -94,13 +96,13 @@ const EditProductScreen = ({route, navigation}) => {
 
   useEffect(() => {
     navigation.setOptions({
-      title: id ? 'Edit product' : 'Add new product',
+      title: id ? "Edit product" : "Add new product",
     });
   }, [id]);
 
   const changeHandler = (inputIdentifier, text) => {
     let isValid = false;
-    if (inputIdentifier === 'price') {
+    if (inputIdentifier === "price") {
       const num = parseInt(text);
       if (num > 0 && num < 1000000) {
         isValid = true;
@@ -119,7 +121,7 @@ const EditProductScreen = ({route, navigation}) => {
   };
 
   return (
-    <KeyboardAvoidingView style={{flex: 1}}>
+    <KeyboardAvoidingView style={{ flex: 1 }}>
       <ScrollView>
         <View style={styles.form}>
           <Input
@@ -161,17 +163,12 @@ const EditProductScreen = ({route, navigation}) => {
           />
 
           <View style={styles.buttonContainer}>
-            <TouchableCmp
-              onPress={submitHandler}
-              disabled={!formState.formValid}>
-              <View
-                style={[
-                  DefaultStyle.button,
-                  {backgroundColor: formState.formValid ? '#444a5c' : '#888'},
-                ]}>
-                <Text style={DefaultStyle.buttonText}>Submit</Text>
-              </View>
-            </TouchableCmp>
+            <CustomButton
+              onPressHandler={submitHandler}
+              label="Submit"
+              color={formState.formValid ? "#444a5c" : "#888"}
+              disabled={!formState.formValid}
+            />
           </View>
         </View>
       </ScrollView>
@@ -184,7 +181,7 @@ const styles = StyleSheet.create({
     margin: 20,
   },
   buttonContainer: {
-    alignItems: 'center',
+    alignItems: "center",
     margin: 10,
   },
 });
