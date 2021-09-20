@@ -4,9 +4,11 @@ export const ADD_ORDER = "ADD_ORDER";
 export const GET_ORDERS = "GET_ORDERS";
 
 export const fetchOrders = () => {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
+    const token = getState().auth.token;
+    const userId = getState().auth.userId;
     const response = await fetch(
-      "https://shopping-app-151f4-default-rtdb.europe-west1.firebasedatabase.app/orders/u1.json"
+      `https://shopping-app-151f4-default-rtdb.europe-west1.firebasedatabase.app/orders/${userId}.json?auth=${token}`
     );
 
     if (!response.ok) {
@@ -31,10 +33,12 @@ export const fetchOrders = () => {
 };
 
 export const addOrder = (cartItems, totalAmount) => {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
+    const token = getState().auth.token;
+    const userId = getState().auth.userId;
     const date = new Date().toISOString();
     const response = await fetch(
-      "https://shopping-app-151f4-default-rtdb.europe-west1.firebasedatabase.app/orders/u1.json",
+      `https://shopping-app-151f4-default-rtdb.europe-west1.firebasedatabase.app/orders/${userId}.json?auth=${token}`,
       {
         method: "POST",
         headers: {

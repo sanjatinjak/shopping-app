@@ -16,7 +16,7 @@ export default (state = initalState, action) => {
     case CREATE_PRODUCT:
       const newProduct = new Product(
         action.payload.id,
-        "u1",
+        action.payload.ownerId,
         action.payload.title,
         action.payload.imageUrl,
         action.payload.description,
@@ -29,10 +29,8 @@ export default (state = initalState, action) => {
       };
     case GET_PRODUCTS:
       return {
-        allProducts: action.payload,
-        userProducts: action.payload.filter(
-          (product) => product.ownerId === "u1"
-        ),
+        allProducts: action.allProducts,
+        userProducts: action.userProducts,
       };
 
     case UPDATE_PRODUCT:

@@ -6,7 +6,8 @@ export const UPDATE_PRODUCT = "UPDATE_PRODUCT";
 export const GET_PRODUCTS = "GET_PRODUCTS";
 
 export const fetchProducts = () => {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
+    const userId = getState().auth.userId;
     try {
       const response = await fetch(
         "https://shopping-app-151f4-default-rtdb.europe-west1.firebasedatabase.app/products.json"
@@ -23,7 +24,6 @@ export const fetchProducts = () => {
         loadedProducts.push(
           new Product(
             key,
-            "u1",
             data[key].title,
             data[key].imageUrl,
             data[key].description,
@@ -32,7 +32,11 @@ export const fetchProducts = () => {
         );
       }
 
-      dispatch({ type: GET_PRODUCTS, payload: loadedProducts });
+      dispatch({
+        type: GET_PRODUCTS,
+        allProducts: loadedProducts,
+        userProducts: loadedProducts.filter((p) => p.ownerId === userId),
+      });
     } catch (error) {
       throw error;
     }
@@ -40,9 +44,10 @@ export const fetchProducts = () => {
 };
 
 export const deleteProduct = (id) => {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
+    const token = getState().auth.token;
     const response = await fetch(
-      `https://shopping-app-151f4-default-rtdb.europe-west1.firebasedatabase.app/products/${id}.json`,
+      `https://shopping-app-151f4-default-rtdb.europe-west1.firebasedatabase.app/products/${id}.json?auth=${token}`,
       { method: "DELETE" }
     );
 
@@ -55,15 +60,23 @@ export const deleteProduct = (id) => {
 };
 
 export const createProduct = (title, description, imageUrl, price) => {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
+    const token = getState().auth.token;
+    const userId = getState().auth.userId;
     const response = await fetch(
-      "https://shopping-app-151f4-default-rtdb.europe-west1.firebasedatabase.app/products.json",
+      `https://shopping-app-151f4-default-rtdb.europe-west1.firebasedatabase.app/products.json?auth=${token}`,
       {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ title, description, imageUrl, price }),
+        body: JSON.stringify({
+          ownerId: userId,
+          title,
+          description,
+          imageUrl,
+          price,
+        }),
       }
     );
 
@@ -71,15 +84,23 @@ export const createProduct = (title, description, imageUrl, price) => {
 
     dispatch({
       type: CREATE_PRODUCT,
-      payload: { id: data.name, title, description, imageUrl, price },
+      payload: {
+        id: data.name,
+        title,
+        description,
+        imageUrl,
+        price,
+        ownerId: userId,
+      },
     });
   };
 };
 
 export const updateProduct = (id, title, description, imageUrl) => {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
+    const token = getState().auth.token;
     const response = await fetch(
-      `https://shopping-app-151f4-default-rtdb.europe-west1.firebasedatabase.app/products/${id}.json`,
+      `https://shopping-app-151f4-default-rtdb.europe-west1.firebasedatabase.app/products/${id}.json?auth=${token}`,
       {
         method: "PATCH",
         headers: {
