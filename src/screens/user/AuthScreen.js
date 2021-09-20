@@ -5,30 +5,62 @@ import {
   KeyboardAvoidingView,
   TextInput,
   StyleSheet,
+  ActivityIndicator,
+  Alert,
 } from "react-native";
+import { useDispatch } from "react-redux";
 
+import * as AuthActions from "../../store/actions/auth";
 import Input from "../../components/Input";
 import CustomButton from "../../components/CustomButton";
 
 const LoginScreen = (props) => {
+  const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const [emailValid, setEmailValid] = useState(false);
   const [passwordValid, setPasswordValid] = useState(false);
 
+  const [signUp, setSignUp] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState();
+
   const regularExp = /\S+@\S+\.\S+/g;
 
   const handleEmail = (label, text) => {
-    if (label === "email") {
-      setEmailValid(regularExp.test(email));
-      setEmail(text);
-    }
+    setEmailValid(regularExp.test(email));
+    setEmail(text);
   };
 
   const handlePassword = (label, text) => {
     password.length < 6 ? setPasswordValid(false) : setPasswordValid(true);
     setPassword(text);
+  };
+
+  useEffect(() => {
+    if (error) {
+      Alert.alert("An error occcured !", error, [{ text: "Ok" }]);
+    }
+  }, [error]);
+
+  const authHandler = async () => {
+    let action;
+    if (signUp) {
+      action = AuthActions.signUp(email, password);
+    } else {
+      action = AuthActions.logIn(email, password);
+    }
+    setError(null);
+    setLoading(true);
+    try {
+      await dispatch(action);
+      props.navigation.navigate("Products");
+    } catch (error) {
+      setError(error.message);
+      
+    }
+    setLoading(false);
   };
 
   return (
@@ -57,17 +89,23 @@ const LoginScreen = (props) => {
           />
 
           <View style={styles.buttons}>
-            <CustomButton
-              label="Log in"
-              color="blue"
-              onPressHandler={() => {}}
-            />
+            {loading ? (
+              <ActivityIndicator color="black" size="large" />
+            ) : (
+              <CustomButton
+                label={signUp ? "Sign up" : "Login"}
+                color="blue"
+                width={250}
+                onPressHandler={authHandler}
+              />
+            )}
           </View>
           <View style={styles.buttons}>
             <CustomButton
-              label="Sign up"
+              label={`Switch to ${signUp ? "Login" : "Sign up"} `}
+              width={250}
               color="orange"
-              onPressHandler={() => {}}
+              onPressHandler={() => setSignUp((prevState) => !prevState)}
             />
           </View>
         </ScrollView>
@@ -90,13 +128,13 @@ const styles = StyleSheet.create({
     elevation: 5,
     backgroundColor: "white",
     borderRadius: 10,
-    width: 300,
+    width: 320,
     maxHeight: 300,
     padding: 20,
   },
   buttons: {
     alignItems: "center",
-    marginTop: 5,
+    marginTop: 8,
   },
 });
 

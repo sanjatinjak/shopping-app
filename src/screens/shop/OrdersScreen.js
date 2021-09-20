@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { FlatList, ActivityIndicator, View } from "react-native";
+import { FlatList, ActivityIndicator, View, Text } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
@@ -35,10 +35,18 @@ const OrderScreen = (props) => {
     });
   }, []);
 
-  if (loading) {
+  if (loading && !orders) {
     return (
       <View style={DefaultStyle.spinner}>
         <ActivityIndicator size="large" color={Colors.primary} />
+      </View>
+    );
+  }
+
+  if (orders.length === 0) {
+    return (
+      <View style={DefaultStyle.spinner}>
+        <Text>No orders found.</Text>
       </View>
     );
   }

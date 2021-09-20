@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { FlatList, Alert } from "react-native";
+import { FlatList, Alert, View, Text } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
@@ -8,6 +8,7 @@ import * as ProductActions from "../../store/actions/products";
 import CustomHeaderButton from "../../components/HeaderButton";
 import ProductItem from "../../components/ProductItem";
 import Colors from "../../constants/Colors";
+import DefaultStyle from "../../constants/DefaultStyle";
 import CustomButton from "../../components/CustomButton";
 
 const UserProductsScreen = (props) => {
@@ -54,6 +55,14 @@ const UserProductsScreen = (props) => {
     });
   };
 
+  if (userProducts.length === 0) {
+    return (
+      <View style={DefaultStyle.spinner}>
+        <Text>No products found.</Text>
+      </View>
+    );
+  }
+
   return (
     <FlatList
       data={userProducts}
@@ -68,12 +77,14 @@ const UserProductsScreen = (props) => {
             onPressHandler={() => onSelectHandler(itemData.item.id)}
             label="Edit"
             color={Colors.primary}
+            width={100}
           />
 
           <CustomButton
             onPressHandler={() => deleteHandler(itemData.item.id)}
             label="Delete"
             color="red"
+            width={100}
           />
         </ProductItem>
       )}

@@ -61,7 +61,7 @@ function ProductsNavigator() {
 function AuthStack() {
   return (
     <Stack.Navigator screenOptions={defaultStyle}>
-      <Stack.Screen name="Authentication" component={AuthScreen} />
+      <Stack.Screen name="Authentication" component={AuthScreen} options={{headerShown:false}} />
     </Stack.Navigator>
   );
 }

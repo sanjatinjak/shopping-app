@@ -29,7 +29,9 @@ const ProductDetailScreen = ({ route, navigation }) => {
           label="Add to cart"
         />
       </View>
-      <Text style={styles.price}>${selectedProduct.price.toFixed(2)}</Text>
+      <Text style={styles.price}>
+        ${selectedProduct.price ? selectedProduct.price.toFixed(2) : 0}
+      </Text>
       <Text style={styles.description}>{selectedProduct.description}</Text>
     </ScrollView>
   );
