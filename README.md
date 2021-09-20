@@ -7,7 +7,7 @@ After login/signup in application user can then buy or sell products.
 ## Install and run on android
 ```
 npm install -g react-native-cli
-cd shopping
+cd shopping-app
 npm install
 react-native run-android
 ```
@@ -15,7 +15,7 @@ react-native run-android
 ## Install and run on ios
 ```
 npm install -g react-native-cli
-cd shopping
+cd shopping-app
 npm install
 react-native run-ios
 ```
