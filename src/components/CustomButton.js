@@ -11,7 +11,7 @@ export default CustomButton = (props) => {
       disabled={props.disabled ? props.disabled : false}
     >
       <View
-        style={{ ...DefaultStyle.button, ...{ backgroundColor: props.color } }}
+        style={{ ...DefaultStyle.button, ...{ backgroundColor: props.color, width: props.width } }}
       >
         <Text style={DefaultStyle.buttonText}>{props.label}</Text>
       </View>

@@ -11,8 +11,10 @@ const OrderItem = ({ orders }) => {
   return (
     <View style={styles.container}>
       <View style={styles.summary}>
-        <Text style={styles.infoText}>${orders.totalAmount.toFixed(2)}</Text>
-        <Text style={styles.date}>{orders.readableDate}</Text>
+        <Text style={styles.infoText}>
+          ${orders.totalAmount ? orders.totalAmount.toFixed(2) : 0}
+        </Text>
+        <Text style={styles.date}>{orders.date.toString()}</Text>
       </View>
 
       <View style={styles.buttonContainer}>

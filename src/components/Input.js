@@ -1,9 +1,9 @@
-import React, {useState} from 'react';
-import {View, Text, TextInput, StyleSheet} from 'react-native';
+import React, { useState } from "react";
+import { View, Text, TextInput, StyleSheet } from "react-native";
 
-import Fonts from '../constants/Fonts';
+import Fonts from "../constants/Fonts";
 
-const Input = props => {
+const Input = (props) => {
   const [touched, setTouched] = useState(false);
 
   return (
@@ -13,12 +13,12 @@ const Input = props => {
         {...props}
         style={styles.input}
         value={props.value}
-        onChangeText={text => {
+        onChangeText={(text) => {
           props.onChangeHandler(props.label, text);
         }}
         onEndEditing={() => setTouched(!touched)}
       />
-      {!props.isInputValid && touched && (
+      {!props.isInputValid && touched && props.value.length === 0 && (
         <Text style={styles.error}>{props.errorText}</Text>
       )}
     </View>
@@ -27,7 +27,7 @@ const Input = props => {
 
 const styles = StyleSheet.create({
   formControl: {
-    width: '100%',
+    width: "100%",
   },
   label: {
     fontFamily: Fonts.lemonRegular,
@@ -36,14 +36,14 @@ const styles = StyleSheet.create({
   input: {
     paddingHorizontal: 2,
     paddingVertical: 5,
-    borderBottomColor: '#888',
+    borderBottomColor: "#888",
     borderBottomWidth: 1,
   },
   error: {
     fontFamily: Fonts.lemonLight,
     fontSize: 12,
-    color: 'red',
-    textTransform: 'capitalize',
+    color: "red",
+    textTransform: "capitalize",
   },
 });
 
