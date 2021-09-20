@@ -1,30 +1,21 @@
-import PRODUCTS from "../../data/dummy-data";
 import {
   DELETE_PRODUCT,
   CREATE_PRODUCT,
   UPDATE_PRODUCT,
+  GET_PRODUCTS,
 } from "../actions/products";
 import Product from "../../models/product";
 
 const initalState = {
-  allProducts: PRODUCTS,
-  userProducts: PRODUCTS.filter((product) => product.ownerId === "u1"),
+  allProducts: [],
+  userProducts: [],
 };
 
 export default (state = initalState, action) => {
   switch (action.type) {
-    case DELETE_PRODUCT:
-      const id = action.payload;
-      return {
-        ...state,
-        userProducts: state.userProducts.filter((product) => product.id !== id),
-        allProducts: state.allProducts.filter((product) => product.id !== id),
-      };
     case CREATE_PRODUCT:
-      console.log(action.payload.price);
-      console.log(typeof action.payload.price);
       const newProduct = new Product(
-        new Date().toString(),
+        action.payload.id,
         "u1",
         action.payload.title,
         action.payload.imageUrl,
@@ -36,6 +27,14 @@ export default (state = initalState, action) => {
         allProducts: state.allProducts.concat(newProduct),
         userProducts: state.userProducts.concat(newProduct),
       };
+    case GET_PRODUCTS:
+      return {
+        allProducts: action.payload,
+        userProducts: action.payload.filter(
+          (product) => product.ownerId === "u1"
+        ),
+      };
+
     case UPDATE_PRODUCT:
       const productIndex = state.userProducts.findIndex(
         (product) => product.id === action.pid
@@ -61,6 +60,14 @@ export default (state = initalState, action) => {
         ...state,
         allProducts: updatedAllProducts,
         userProducts: updatedUserProducts,
+      };
+
+    case DELETE_PRODUCT:
+      const id = action.payload;
+      return {
+        ...state,
+        userProducts: state.userProducts.filter((product) => product.id !== id),
+        allProducts: state.allProducts.filter((product) => product.id !== id),
       };
   }
   return state;

@@ -1,5 +1,11 @@
-import React from "react";
-import { View, Text, FlatList, StyleSheet } from "react-native";
+import React, { useState } from "react";
+import {
+  View,
+  Text,
+  FlatList,
+  StyleSheet,
+  ActivityIndicator,
+} from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 
 import * as CartActions from "../../store/actions/cart";
@@ -7,9 +13,13 @@ import * as OrderActions from "../../store/actions/orders";
 import CartItem from "../../components/CartItem";
 import Fonts from "../../constants/Fonts";
 import CustomButton from "../../components/CustomButton";
+import DefaultStyle from "../../constants/DefaultStyle";
+import Colors from "../../constants/Colors";
 
 const CartScreen = (props) => {
   const dispatch = useDispatch();
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState();
   const cartTotalAmount = useSelector((state) => state.cart.totalAmount);
   const cartItems = useSelector((state) => {
     const transformedCartItems = [];
@@ -26,6 +36,12 @@ const CartScreen = (props) => {
     return transformedCartItems.sort((a, b) => a.productId - b.productId);
   });
 
+  const handleOrderSubmit = async () => {
+    setIsLoading(true);
+    await dispatch(OrderActions.addOrder(cartItems, cartTotalAmount));
+    setIsLoading(false);
+  };
+
   return (
     <View style={styles.screen}>
       <View style={styles.summary}>
@@ -35,14 +51,18 @@ const CartScreen = (props) => {
             ${Math.round(cartTotalAmount.toFixed(2) * 100) / 100}
           </Text>
         </Text>
-        <CustomButton
-          onPressHandler={() =>
-            dispatch(OrderActions.addOrder(cartItems, cartTotalAmount))
-          }
-          label="Order now"
-          color={cartItems.length === 0 ? "gray" : "green"}
-          disabled={cartItems.length === 0 ? true : false}
-        />
+        {isLoading ? (
+          <View>
+            <ActivityIndicator size="small" color={Colors.primary} />
+          </View>
+        ) : (
+          <CustomButton
+            onPressHandler={handleOrderSubmit}
+            label="Order now"
+            color={cartItems.length === 0 ? "gray" : "green"}
+            disabled={cartItems.length === 0 ? true : false}
+          />
+        )}
       </View>
       <FlatList
         data={cartItems}

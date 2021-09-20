@@ -26,7 +26,7 @@ const OrderItem = ({ orders }) => {
       {showDetails && (
         <View style={styles.detailItems}>
           {orders.items.map((item) => (
-            <CartItem key={item.productId} product={item} />
+            <CartItem key={item.id} product={item} />
           ))}
         </View>
       )}
