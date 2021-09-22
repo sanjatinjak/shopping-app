@@ -39,10 +39,17 @@ const LoginScreen = (props) => {
   };
 
   useEffect(() => {
+    const stayOnScreen = props.navigation.addListener("beforeRemove", (e) => {
+      // Prevent default action
+      e.preventDefault();
+    });
+
     if (error) {
       Alert.alert("An error occcured !", error, [{ text: "Ok" }]);
     }
-  }, [error]);
+
+    return stayOnScreen;
+  }, [error,props.navigation]);
 
   const authHandler = async () => {
     let action;
@@ -55,10 +62,9 @@ const LoginScreen = (props) => {
     setLoading(true);
     try {
       await dispatch(action);
-      props.navigation.navigate("Products");
+      props.navigation.navigate("ProductsOverview");
     } catch (error) {
       setError(error.message);
-      
     }
     setLoading(false);
   };

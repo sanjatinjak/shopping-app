@@ -1,9 +1,17 @@
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { createDrawerNavigator } from "@react-navigation/drawer";
+import {
+  createDrawerNavigator,
+  DrawerItemList,
+  DrawerItem,
+  DrawerContentScrollView,
+} from "@react-navigation/drawer";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import { Text } from "react-native";
+import { useDispatch } from "react-redux";
 
+import * as AuthActions from "../store/actions/auth";
 import ProductsOverviewScreen from "../screens/shop/ProductsOverviewScreen";
 import ProductDetailScreen from "../screens/shop/ProductDetailScreen";
 import CartScreen from "../screens/shop/CartScreen";
@@ -11,6 +19,7 @@ import OrdersScreen from "../screens/shop/OrdersScreen";
 import UserProductsScreen from "../screens/user/UserProductsScreen";
 import EditProductScreen from "../screens/user/EditProductScreen";
 import AuthScreen from "../screens/user/AuthScreen";
+import HomeScreen from "../screens/HomeScreen";
 
 import Colors from "../constants/Colors";
 import Fonts from "../constants/Fonts";
@@ -40,9 +49,21 @@ function ProductsNavigator() {
   return (
     <Stack.Navigator screenOptions={defaultStyle}>
       <Stack.Screen
+        name="Home"
+        component={HomeScreen}
+        options={{
+          title: null,
+        }}
+      />
+      <Stack.Screen
         name="ProductsOverview"
         component={ProductsOverviewScreen}
         options={{ title: "All products" }}
+        listeners={{
+          beforeRemove: (e) => {
+            e.preventDefault();
+          },
+        }}
       />
       <Stack.Screen
         name="ProductDetail"
@@ -61,7 +82,11 @@ function ProductsNavigator() {
 function AuthStack() {
   return (
     <Stack.Navigator screenOptions={defaultStyle}>
-      <Stack.Screen name="Authentication" component={AuthScreen} options={{headerShown:false}} />
+      <Stack.Screen
+        name="Authentication"
+        component={AuthScreen}
+        options={{ headerShown: false }}
+      />
     </Stack.Navigator>
   );
 }
@@ -79,10 +104,40 @@ function AdminNavigator() {
   );
 }
 
+const CustomComponent = (props) => {
+  const dispatch = useDispatch();
+  return (
+    <DrawerContentScrollView {...props}>
+      <DrawerItemList {...props} />
+      <DrawerItem
+        icon={() => (
+          <MaterialIcons name="shopping-cart" color="red" size={20} />
+        )}
+        activeTintColor="red"
+        inactiveTintColor="red"
+        labelStyle={{ fontFamily: Fonts.lemonBold }}
+        label="Logout"
+        onPress={() => {
+          dispatch(AuthActions.logout());
+          props.navigation.navigate("Auth");
+        }}
+      />
+    </DrawerContentScrollView>
+  );
+};
+
 function ShopNavigator() {
   return (
     <NavigationContainer>
-      <Drawer.Navigator screenOptions={{ headerShown: false }}>
+      <Drawer.Navigator
+        initialRouteName="Products"
+        screenOptions={({ route }) => ({
+          swipeEnabled: route.name === "Auth" ? false : true,
+          headerShown: false,
+          drawerLabelStyle: { fontFamily: Fonts.lemonBold },
+        })}
+        drawerContent={(props) => <CustomComponent {...props} />}
+      >
         <Drawer.Screen
           name="Products"
           component={ProductsNavigator}

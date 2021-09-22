@@ -1,5 +1,16 @@
-export const SIGN_UP = "SIGN_UP";
-export const LOG_IN = "LOG_IN";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+export const AUTHENTICATE = "AUTHENTICATE";
+export const LOG_OUT = "LOG_OUT";
+
+let timer;
+
+export const authenticate = (userId, token, expiryTime) => {
+  return (dispatch) => {
+    dispatch(setLogoutTimer(expiryTime));
+    dispatch({ type: AUTHENTICATE, userId, token });
+  };
+};
 
 export const signUp = (email, password) => {
   return async (dispatch) => {
@@ -24,8 +35,13 @@ export const signUp = (email, password) => {
       throw new Error(message);
     }
     const data = await response.json();
-
-    dispatch({ type: SIGN_UP, token: data.idToken, userId: data.localId });
+    dispatch(
+      authenticate(data.localId, data.idToken, parseInt(data.expiresIn) * 1000)
+    );
+    const expirationDate = new Date(
+      new Date().getTime() + parseInt(data.expiresIn) * 1000
+    );
+    saveData(data.idToken, data.localId, expirationDate);
   };
 };
 
@@ -54,7 +70,39 @@ export const logIn = (email, password) => {
       throw new Error(message);
     }
     const data = await response.json();
-   
-    dispatch({ type: LOG_IN, token: data.idToken, userId: data.localId });
+
+    dispatch(
+      authenticate(data.localId, data.idToken, parseInt(data.expiresIn) * 1000)
+    );
+    const expirationDate = new Date(
+      new Date().getTime() + parseInt(data.expiresIn) * 1000
+    );
+    saveData(data.idToken, data.localId, expirationDate);
   };
+};
+
+export const logout = () => {
+  clearLogoutTimer();
+  AsyncStorage.removeItem("@userData");
+  return { type: LOG_OUT };
+};
+
+const clearLogoutTimer = () => {
+  if (timer) {
+    clearTimeout(timer);
+  }
+};
+export const setLogoutTimer = (expirationTime) => {
+  return (dispatch) => {
+    timer = setTimeout(() => {
+      dispatch(logout());
+    }, expirationTime);
+  };
+};
+
+const saveData = (token, userId, expirationDate) => {
+  AsyncStorage.setItem(
+    "@userData",
+    JSON.stringify({ token, userId, expiryDate: expirationDate.toISOString() })
+  );
 };
